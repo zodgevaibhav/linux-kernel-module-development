@@ -1,0 +1,17 @@
+sudo insmod hello.ko
+dmesg | tail
+
+sudo rmmod hello.ko
+dmesg | tail
+
+objdump -f hello.ko 
+objdump -h hello.ko 
+
+modinfo hello.ko
+
+lsmod | grep hello
+
+cat /proc/modules | grep hello
+
+make -C /lib/modules/`uname -r`/build M=`pwd` modules
+make -C /lib/modules/`uname -r`/build M=`pwd` clean
