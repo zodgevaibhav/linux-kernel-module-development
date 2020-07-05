@@ -1,0 +1,30 @@
+** verify dependency using modinfo
+	modinfo import.ko
+	modinfo export.ko
+** View dependent modules
+	cat /lib/modules/4.4.0-101-generic/modules.dep
+
+** update modules.dep
+	copy ko files to
+	sudo cp import.ko export.ko /lib/modules/'unale -r'/kernel
+	sudo depmod
+ 
+	moddep
+
+** modprobe tool to import the modules
+	sudo modprobe import 
+		where import is name of module. It should have module copied to kernel
+
+	sudo modprobe -r import //make sure dependency module removed first and then dependent  
+	sudo modprobe -r export 
+
+
+
+** insmod -> Load module to kernel space
+** modprob -> read modules.dep
+			  find module in /lib/modules/..../kernel
+			   Load module to kernel space and while loading take care of dependencydeployment 
+
+** Use system.ctl scripts and load the module to kernel
+
+** Kernel modules must need to make and rebuild on customers machine. Learn -> kernel Vmagic. Ex. Read virtual box dkms command

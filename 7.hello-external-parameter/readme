@@ -1,0 +1,20 @@
+****************** Module loading with parameter (7.hello-external-parameter)
+        While Loading :
+            sudo insmod hello.ko cnt=5 uname=swati
+        
+        After Loading :
+            echo "5" |sudo tee /sys/module/hello/parameters/cnt
+
+
+View parameters in obje dump
+	objdump -t hello.ko
+
+View Parameters in Kernel Symbol
+	make -C /lib/modules/`uname -r`/build M=`pwd` modules
+
+View Parameters in module info
+	modinfo hello.ko
+
+View Parameters in module folder
+	cat /sys/module/hello/parameters/cnt
+	cat /sys/module/hello/parameters/uname
