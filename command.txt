@@ -1,3 +1,4 @@
+************* Module Load/Unload Commands****************
 sudo insmod hello.ko
 dmesg | tail
 
@@ -13,5 +14,17 @@ lsmod | grep hello
 
 cat /proc/modules | grep hello
 
+    ****************** Module loading with parameter (7.hello-external-parameter)
+        While Loading :
+            sudo insmod hello.ko cnt=5 uname=swati
+        
+        After Loading :
+            echo "5" |sudo tee /sys/module/hello/parameters/cnt
+
+
+************* Make Commands ****************
 make -C /lib/modules/`uname -r`/build M=`pwd` modules
 make -C /lib/modules/`uname -r`/build M=`pwd` clean
+
+************* See kernel Symbols Table ****************
+ sudo cat /proc/kallsyms
