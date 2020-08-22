@@ -28,3 +28,11 @@ make -C /lib/modules/`uname -r`/build M=`pwd` clean
 
 ************* See kernel Symbols Table ****************
  sudo cat /proc/kallsyms
+
+ ########### Device Driver Commands
+
+ view device classes
+    ls /sys/class
+    ls -l /dev/pchar
+    echo "Hello" | sudo tee /dev/vz_pchar
+

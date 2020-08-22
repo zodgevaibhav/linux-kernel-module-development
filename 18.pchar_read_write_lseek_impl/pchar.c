@@ -23,13 +23,15 @@ static int pchar_open(struct inode *pinode, struct file *pfile) ; //Professional
 static int pchar_release(struct inode *pinode, struct file *pfile);
 static ssize_t pchar_read(struct file *pfile, char __user *buf, size_t len, loff_t *pf_pos); //__user says this buffer coming from user space
 static ssize_t pchar_write(struct file *pfile, const char __user *buf, size_t len, loff_t *pf_pos);
+static loff_t pchar_lseek(struct file *, loff_t, int);
 
 static struct file_operations pchar_fops = {  //tagged structure initilization
     .owner = THIS_MODULE,
     .open = pchar_open,
     .release = pchar_release,
     .read = pchar_read,
-    .write = pchar_write
+    .write = pchar_write,
+    .llseek=pchar_lseek //make note of name is llseek
 };
 
 int __init pchar_init(void)
@@ -156,6 +158,32 @@ void __exit pchar_exit(void)
 	return nbytes;
  }
 
+ static loff_t pchar_lseek(struct file *pfile, loff_t offset, int origin) {
+	loff_t newpos = pfile->f_pos;
+	switch (origin)
+	{
+	case SEEK_SET:
+		newpos = 0 + offset;
+		break;
+	case SEEK_END:
+		newpos = MAXLEN + offset;
+		break;
+	case SEEK_CUR:
+		newpos = pfile->f_pos + offset;
+		break;
+	}
+
+
+    if(newpos<0)
+        newpos = 0;
+    if(newpos<MAXLEN)
+        newpos = MAXLEN;
+
+    pfile->f_pos = newpos;
+
+    return newpos;
+ }
+
 module_init(pchar_init);
 module_exit(pchar_exit);
 
@@ -186,5 +214,4 @@ Command
 [14152.387435] [pchar]: pchar_read() read 32 bytes from the device.
 [14152.387457] [pchar]: pchar_read() reached to end of device.
 [14152.387478] ******* pchar_release
-
 */
